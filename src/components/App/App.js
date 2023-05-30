@@ -18,8 +18,8 @@ const App = () => {
         <div className="app">
             <HeaderApp />
             <main>
-                <BanerApp />
-                {/* <RandomHero /> */}
+                {/* <BanerApp /> */}
+                <RandomHero />
                 <div className="main__content">
                     {/* <SingHero /> */}
                     <HeroList />

@@ -1,5 +1,7 @@
 import { Component } from 'react';
 import MarvelServices from '../../services/MarvelServices';
+import Spinner from '../Spinner/Spinner'
+import ErrorMessage from '../ErrorMessage/ErrorMessage';
 
 import './RandomHero.scss';
 
@@ -7,73 +9,54 @@ import armor from '../../resources/img/Armor.png';
 
 
 class RandomHero extends Component {
-    constructor(props) {
-        super(props);
-        this.getRandomHero();
+    state = {
+        loading: true,
+        error: false,
+        hero: {}
+    }
+    getRequest = new MarvelServices();
 
-        this.state = {
-            hero: {
-                name: null,
-                description: null,
-                thumbnail: null,
-                homePage: null,
-                wiki: null
-            }
-        }
+    // for the first run 
+    componentDidMount() {
+        const randomBtn = document.querySelector('#getRandom');
+        randomBtn.addEventListener('click', this.getRandomHero);
+        this.getRandomHero();
     }
 
+    componentWillUnmount() {
+        const randomBtn = document.querySelector('#getRandom');
+        randomBtn.removeEventListener('click', this.getRandomHero);
+    }
+
+
     onLoadHero = (hero) => {
-        this.setState({hero})
+        this.setState({hero, loading: false, error: false});
     }
 
     getRandomHero = () => {
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
-        const getRequest = new MarvelServices();
-        getRequest.getSinglHero(id)
-            .then(this.onLoadHero);
+        if(!this.state.loading) {
+            this.setState({loading:true});
+            console.log('Change loading status');
+        }
+
+        this.getRequest.getSinglHero(id)
+            .then(this.onLoadHero)
+            .catch(() => this.setState({error: true, loading: false}));
     }
 
     render() {
-        const {name, description, thumbnail, homePage, wiki} = this.state.hero;
-        let curectDescription = '';
-
-        if(description === '' || !description) {
-            curectDescription = <p>Sorry but information about this hero is undefined:<br /><br /> if you want to get information about it you can search it in google or reade documentation`</p>
-        } else {
-            curectDescription = description;
-            if(curectDescription.length > 450) {
-                curectDescription = curectDescription.slice(0, 447) + '...';
-            }
-        }
+        console.log('rendering...');
+        const {loading, hero, error} = this.state;
 
         return (
             <div className="app__rundom">
                 <div className="random__result">
-                    <div className="random__content">
-                        <div className="hero__img">
-                            <img src={thumbnail} className="hero__photo" alt="hero foto" />
-                        </div>
-                        <div className="hero__info">
-                            <div className="info__title">{name}</div>
-                            <div className="info__text">{curectDescription}</div>
-    
-                            <div className="info__btns">
-                                <button className='button button__main'>
-                                    <div className="inner">
-                                        <a target="_blank" href={homePage} rel="noreferrer">HOMEPAGE</a>
-                                    </div>
-                                </button>
-    
-                                <button className='button button__secondary'>
-                                    <div className="inner">
-                                        <a target="_blank" href={wiki} rel="noreferrer">WIKI</a>
-                                    </div>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+
+                    {(error) ? <ErrorMessage /> : (loading) ? <Spinner /> 
+                        : <ShowResult hero={hero} />}
+
                 </div>
-    
                 <div className="get__random">
                     <div 
                         style={{
@@ -87,7 +70,8 @@ class RandomHero extends Component {
                         <p className="get__random__text">Or choose another one</p>
     
                         <button
-                            onClick={this.getRandomHero}
+                            id='getRandom'
+                            // onClick={this.getRandomHero}
                             className='button button__main'>
                             <div className="inner">Try it</div>
                         </button>
@@ -96,6 +80,51 @@ class RandomHero extends Component {
             </div>
         )
     }
+}
+
+const ShowResult = ({hero}) => {
+    // Validation for description
+    const descriptionValidation = (desc) => {
+        let curectDescription;
+        if(desc === '' || !desc) {
+            curectDescription = <p>Sorry but information about this hero is undefined:<br /><br /> if you want to get information about it you can search it in google or reade documentation`</p>
+        } else {
+            curectDescription = desc;
+            if(curectDescription.length > 450) {
+                curectDescription = curectDescription.slice(0, 447) + '...';
+            }
+        }
+        return curectDescription;
+    }
+
+    const {name, description, thumbnail, homePage, wiki} = hero;
+    let curectDescription = descriptionValidation(description);
+
+    return (
+        <div className="random__content">
+        <div className="hero__img">
+            <img src={thumbnail} className="hero__photo" alt="hero foto" />
+        </div>
+        <div className="hero__info">
+            <div className="info__title">{name}</div>
+            <div className="info__text">{curectDescription}</div>
+
+            <div className="info__btns">
+                <button className='button button__main'>
+                    <div className="inner">
+                        <a target="_blank" href={homePage} rel="noreferrer">HOMEPAGE</a>
+                    </div>
+                </button>
+
+                <button className='button button__secondary'>
+                    <div className="inner">
+                        <a target="_blank" href={wiki} rel="noreferrer">WIKI</a>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+    )        
 }
 
 export default RandomHero;

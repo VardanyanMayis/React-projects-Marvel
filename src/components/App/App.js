@@ -1,3 +1,5 @@
+import { Component } from 'react';
+
 // import Components
 import HeaderApp from '../HeaderApp/HeaderApp';
 import RandomHero from '../RandomHero/RandomHero';
@@ -13,31 +15,47 @@ import SingHero from '../SingHero/SingHero';
 import bg from '../../resources/img/bg.png';
 import './App.scss';
 
-const App = () => {
-    return (
-        <div className="app">
-            <HeaderApp />
-            <main>
-                {/* <BanerApp /> */}
-                <RandomHero />
-                <div className="main__content">
-                    {/* <SingHero /> */}
-                    <HeroList />
-                    {/* <ComixList /> */}
-                    {/* <SinglComix /> */}
-                    <section>
-                        {/* <UnderFindHero /> */}
-                        <HeroSidebarInfo />
-                        <FormApp />
-                    </section>
-                </div>
-            </main>
+class App extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            showComponentRandomHero: true
+        }
+    }
 
-            <div className="bg-decoration">
-                <img src={bg} alt="bg decaration" />
+    showRandomHero = () => {
+        this.setState(({showComponentRandomHero}) => ({
+            showComponentRandomHero: !showComponentRandomHero
+        }))
+    }
+
+    render() {
+        const {showComponentRandomHero} = this.state;
+
+        return (
+            <div className="app">
+                <HeaderApp />
+                <main>
+                    {showComponentRandomHero ? <RandomHero /> : <BanerApp />}
+                    <div className="main__content">
+                        {/* <SingHero /> */}
+                        {/* <HeroList /> */}
+                        {/* <ComixList /> */}
+                        {/* <SinglComix /> */}
+                        <section>
+                            {/* <UnderFindHero /> */}
+                            <HeroSidebarInfo />
+                            <FormApp />
+                        </section>
+                    </div>
+                </main>
+    
+                <div className="bg-decoration">
+                    <img src={bg} alt="bg decaration" />
+                </div>
             </div>
-        </div>
-    )
+        )
+    }
 }
 
 /* <button className='button button__main'>

@@ -39,6 +39,7 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
+<<<<<<< HEAD
 
 ## SCSS 
 
@@ -59,3 +60,10 @@ exemple`
 > _apiKey = 'apikey=a3b56cab6dd7b97f10a85g319540bfbf9'
 
 ...
+=======
+## SCSS 
+
+here I use scss and you need to install package for it`
+
+> npm i --save sass
+>>>>>>> b0f7b8cf91f1c1bfd304d082634b5e03753ee962

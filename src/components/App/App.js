@@ -12,6 +12,10 @@ import UnderFindHero from '../UnderFindHero/UnderFindHero';
 import FormApp from '../FormApp/FormApp';
 import SingHero from '../SingHero/SingHero';
 
+// ErrorComponents
+import ForRandomHero from '../ErrorBoundary/ForRandomHero';
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+
 import bg from '../../resources/img/bg.png';
 import './App.scss';
 
@@ -19,32 +23,40 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showComponentRandomHero: true
+            showComponentRandomHero: true,
+            selectedHero: null,
         }
     }
+    
 
-    showRandomHero = () => {
-        this.setState(({showComponentRandomHero}) => ({
-            showComponentRandomHero: !showComponentRandomHero
-        }))
+    onSelectedHer = (heroId) => {
+        if(heroId) this.setState({selectedHero: heroId});
     }
 
     render() {
-        const {showComponentRandomHero} = this.state;
+        const {showComponentRandomHero, selectedHero} = this.state;
 
         return (
             <div className="app">
                 <HeaderApp />
                 <main>
-                    {showComponentRandomHero ? <RandomHero /> : <BanerApp />}
+                    {showComponentRandomHero ? 
+                    <ForRandomHero>
+                        <RandomHero />
+                    </ForRandomHero> : <BanerApp />}
+
                     <div className="main__content">
                         {/* <SingHero /> */}
-                        {/* <HeroList /> */}
+                        <ErrorBoundary>
+                            <HeroList onSelectedHer={this.onSelectedHer} />
+                        </ErrorBoundary>
                         {/* <ComixList /> */}
                         {/* <SinglComix /> */}
                         <section>
                             {/* <UnderFindHero /> */}
-                            <HeroSidebarInfo />
+                            <ErrorBoundary>
+                                <HeroSidebarInfo heroId={selectedHero} />
+                            </ErrorBoundary>
                             <FormApp />
                         </section>
                     </div>

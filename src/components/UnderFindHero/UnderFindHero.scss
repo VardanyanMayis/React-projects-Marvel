@@ -6,6 +6,7 @@
     margin-bottom: 30px;
 
     .underfind__info__block {
+        background: white;
         width: 100%;
         padding: 25px;
         box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.25);
@@ -48,4 +49,20 @@
             }
         }
     }
+}
+
+@keyframes fade {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.3;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.animating-div {
+    animation: fade 2.5s infinite;
 }

@@ -8,7 +8,7 @@ const ErrorMessage = () => {
             <img src={errorImg} alt="img for error" />
             <div className="error__text__block">
                 <p>Upss!</p>
-                <p>Randomizer couldn't find the hero</p>
+                <p>We couldn't find the hero</p>
                 <p>try again</p>
             </div>
         </div>

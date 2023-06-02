@@ -37,7 +37,6 @@ class RandomHero extends Component {
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
         if(!this.state.loading) {
             this.setState({loading:true});
-            console.log('Change loading status');
         }
 
         this.getRequest.getSinglHero(id)
@@ -46,7 +45,6 @@ class RandomHero extends Component {
     }
 
     render() {
-        console.log('rendering...');
         const {loading, hero, error} = this.state;
 
         return (
@@ -83,22 +81,7 @@ class RandomHero extends Component {
 }
 
 const ShowResult = ({hero}) => {
-    // Validation for description
-    const descriptionValidation = (desc) => {
-        let curectDescription;
-        if(desc === '' || !desc) {
-            curectDescription = <p>Sorry but information about this hero is undefined:<br /><br /> if you want to get information about it you can search it in google or reade documentation`</p>
-        } else {
-            curectDescription = desc;
-            if(curectDescription.length > 450) {
-                curectDescription = curectDescription.slice(0, 447) + '...';
-            }
-        }
-        return curectDescription;
-    }
-
     const {name, description, thumbnail, homePage, wiki} = hero;
-    let curectDescription = descriptionValidation(description);
 
     return (
         <div className="random__content">
@@ -107,7 +90,7 @@ const ShowResult = ({hero}) => {
         </div>
         <div className="hero__info">
             <div className="info__title">{name}</div>
-            <div className="info__text">{curectDescription}</div>
+            <div className="info__text">{description}</div>
 
             <div className="info__btns">
                 <button className='button button__main'>

@@ -57,7 +57,7 @@ class App extends Component {
                             <ErrorBoundary>
                                 <HeroSidebarInfo heroId={selectedHero} />
                             </ErrorBoundary>
-                            <FormApp />
+                            {/* <FormApp /> */}
                         </section>
                     </div>
                 </main>

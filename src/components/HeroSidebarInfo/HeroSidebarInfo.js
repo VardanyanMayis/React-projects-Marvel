@@ -1,4 +1,6 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import UnderFindHero from '../UnderFindHero/UnderFindHero';
 import Spinner from '../Spinner/Spinner';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
@@ -8,12 +10,19 @@ import './HeroSidebarInfo.scss';
 
 
 class HeroSidebarInfo extends Component {
-    state = {
-        hero: null,
-        loading: false,
-        error: false
+    constructor(props) {
+        super(props);
+        this.state = {
+            hero: null,
+            loading: false,
+            error: false
+        }
+        this.getRequest = new MarvelServices();
     }
-    getRequest = new MarvelServices();
+
+    static propTypes = {
+        heroId : PropTypes.number,
+    }
 
     componentDidMount() {
         const {heroId} = this.props;

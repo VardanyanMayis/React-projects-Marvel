@@ -2,6 +2,7 @@ class MarvelServices {
     _apiBase = 'https://gateway.marvel.com:443/v1/public/';
     _apiKey = 'apikey=b3b54cab6dd7b97f9a85a319540bfbf9';
     _heroStartOffset = 300;
+    _heroBaseLimit = 9;
 
     // function for get data
     getResources = async (url) => {
@@ -15,8 +16,8 @@ class MarvelServices {
     }
 
     // get array with all heroes
-    getAllHeroes = async (offset = this._heroStartOffset) => {
-        const res = await this.getResources(`${this._apiBase}characters?limit=9&offset=${offset}&${this._apiKey}`);
+    getAllHeroes = async (limit = this._heroBaseLimit, offset = this._heroStartOffset) => {
+        const res = await this.getResources(`${this._apiBase}characters?limit=${limit}&offset=${offset}&${this._apiKey}`);
         return res.data.results.map(this._transformForSingleHero); // return array with Promises
     }
 
